@@ -1,4 +1,4 @@
-package com.yefei.securityweb.service.impl;
+package com.yefei.securityweb.auth;
 
 import com.yefei.securityweb.entity.SysRole;
 import com.yefei.securityweb.entity.SysUser;
