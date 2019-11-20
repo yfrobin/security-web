@@ -1,7 +1,7 @@
 package com.yefei.securityweb.config;
 
 import com.yefei.securityweb.auth.CustomAuthenticationProvider;
-import com.yefei.securityweb.filter.VerifyFilter;
+//import com.yefei.securityweb.filter.VerifyFilter;
 import com.yefei.securityweb.auth.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -71,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationDetailsSource(authenticationDetailsSource)
                 .and()
                 //在校验用户名密码之前先校验验证码
-                .addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)
                 .logout().permitAll()
                 .and()
                 .rememberMe()
