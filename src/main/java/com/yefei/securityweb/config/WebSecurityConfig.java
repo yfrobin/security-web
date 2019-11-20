@@ -4,6 +4,7 @@ import com.yefei.securityweb.auth.CustomAuthenticationProvider;
 //import com.yefei.securityweb.filter.VerifyFilter;
 import com.yefei.securityweb.auth.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,8 +16,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 /**
  * @Author: yefei
@@ -75,11 +79,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().permitAll()
                 .and()
                 .rememberMe()
-        //    .tokenRepository(persistentTokenRepository())
-        //     有效时间：单位s
-        //.tokenValiditySeconds(60)
-        //.userDetailsService(userDetailsService)
-        ;
+                .tokenRepository(persistentTokenRepository())
+                //有效时间：单位s
+                .tokenValiditySeconds(60)
+                .userDetailsService(userDetailsService)
+                ;
 
         // 关闭CSRF跨域
         http.csrf().disable();
@@ -92,16 +96,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-//    @Autowired
-//    private DataSource dataSource;
-//
-//    @Bean
-//    public PersistentTokenRepository persistentTokenRepository() {
-//        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-//        tokenRepository.setDataSource(dataSource);
-//        // 如果token表不存在，使用下面语句可以初始化该表；若存在，请注释掉这条语句，否则会报错。
-////        tokenRepository.setCreateTableOnStartup(true);
-//        return tokenRepository;
-//    }
+    @Autowired
+    private DataSource dataSource;
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        // 如果token表不存在，使用下面语句可以初始化该表；若存在，请注释掉这条语句，否则会报错。
+//        tokenRepository.setCreateTableOnStartup(true);
+        return tokenRepository;
+    }
 
 }

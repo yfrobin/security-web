@@ -39,11 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         // 从数据库中取出用户信息
-        //SysUser user = userService.selectByName(username);
-        SysUser user = new SysUser();
-        user.setId(1);
-        user.setName("yefei");
-        user.setPassword("123456");
+        SysUser user = userService.selectByName(username);
 
         // 判断用户是否存在
         if(user == null) {
@@ -51,18 +47,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         // 添加权限
-        //List<SysUserRole> userRoles = userRoleService.listByUserId(user.getId());
-        List<SysUserRole> userRoles = new ArrayList<>();
-        SysUserRole sysUserRole = new SysUserRole();
-        sysUserRole.setUserId(1);
-        sysUserRole.setRoleId(1);
-        userRoles.add(sysUserRole);
+        List<SysUserRole> userRoles = userRoleService.listByUserId(user.getId());
         for (SysUserRole userRole : userRoles) {
-            //SysRole role = roleService.selectById(userRole.getRoleId());
-            SysRole role = new SysRole();
-            role.setId(1);
-            role.setName("ROLE_USER");
-
+            SysRole role = roleService.selectById(userRole.getRoleId());
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
