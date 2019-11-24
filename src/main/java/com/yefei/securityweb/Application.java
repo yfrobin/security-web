@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan(basePackages = {"com.yefei.securityweb.dao"})
-public class SecurityWebApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(SecurityWebApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }

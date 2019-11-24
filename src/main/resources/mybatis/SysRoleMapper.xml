@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefei.securityweb.dao.SysRoleMapper">
+
+    <select id="selectByNames" resultType="com.yefei.securityweb.entity.SysRole">
+        select id, name, gmt_create, gmt_modify from sys_role sr
+        where sr.name in
+        <foreach collection="roleNames" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByName" resultType="com.yefei.securityweb.entity.SysRole">
+           SELECT id, name, gmt_create, gmt_modify FROM sys_role WHERE id = #{name}
+    </select>
+
+    <select id="selectById" resultType="com.yefei.securityweb.entity.SysRole">
+            SELECT id, name, gmt_create, gmt_modify FROM sys_role WHERE id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefei.securityweb.dao.SysPermissionMapper">
+
+    <select id="listByRoleIds" resultType="com.yefei.securityweb.entity.SysPermission">
+        select * from sys_permission sp
+        where sp.role_id in
+        <foreach collection="roleIds" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="listByRoleId" resultType="com.yefei.securityweb.entity.SysPermission">
+            SELECT id, url, role_id, permission, gmt_create, gmt_modify FROM sys_permission WHERE role_id=#{roleId}
+    </select>
+</mapper>

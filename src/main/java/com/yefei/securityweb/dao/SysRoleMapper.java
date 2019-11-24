@@ -1,9 +1,10 @@
 package com.yefei.securityweb.dao;
 
 import com.yefei.securityweb.entity.SysRole;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Author: yefei
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SysRoleMapper {
-    @Select("SELECT * FROM sys_role WHERE id = #{id}")
-    SysRole selectById(Integer id);
+    SysRole selectById(@Param("id") Integer id);
+
+    SysRole selectByName(@Param("name") String name);
+
+    List<SysRole> selectByNames(@Param("roleNames") List<String> roleNames);
 }

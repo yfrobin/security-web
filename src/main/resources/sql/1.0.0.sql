@@ -35,3 +35,19 @@ CREATE TABLE IF NOT EXISTS `sys_user_role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
     COMMENT '用户-角色表';
+
+CREATE TABLE `sys_permission`
+(
+    id         INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    url        VARCHAR(255) DEFAULT NULL COMMENT 'url',
+    role_id    INT(11)      DEFAULT NULL COMMENT '角色id',
+    permission VARCHAR(255) DEFAULT NULL COMMENT '权限',
+    gmt_create datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    gmt_modify datetime default CURRENT_TIMESTAMP not null comment '修改时间',
+    PRIMARY KEY (id),
+    KEY `fk_roleId` (role_id),
+    CONSTRAINT `fk_roleId` FOREIGN KEY (role_id) REFERENCES `sys_role` (id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 5
+  DEFAULT CHARSET = utf8
+COMMENT '权限表';

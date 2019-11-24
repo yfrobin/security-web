@@ -1,8 +1,7 @@
 package com.yefei.securityweb.dao;
 
 import com.yefei.securityweb.entity.SysUser;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,9 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SysUserMapper {
-    @Select("SELECT * FROM sys_user WHERE id = #{id}")
-    SysUser selectById(Integer id);
+    SysUser selectById(@Param("id") Integer id);
 
-    @Select("SELECT * FROM sys_user WHERE name = #{name}")
-    SysUser selectByName(String name);
+    SysUser selectByName(@Param("name") String name);
 }
