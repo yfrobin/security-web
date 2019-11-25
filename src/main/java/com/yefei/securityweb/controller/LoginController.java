@@ -1,8 +1,10 @@
 package com.yefei.securityweb.controller;
 
+import com.yefei.securityweb.event.MessageEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,13 +32,15 @@ public class LoginController {
 
     @Autowired
     private SessionRegistry sessionRegistry;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
 
     @RequestMapping("/")
     public String showHome() {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.info("当前登陆用户：" + name);
-
+        publisher.publishEvent(new MessageEvent("登陆成功",new Date()));
         return "home.html";
     }
 
@@ -46,7 +51,7 @@ public class LoginController {
 
     @RequestMapping("/admin")
     @ResponseBody
-    @PreAuthorize("hasPermission('/admin','c')")
+    @PreAuthorize("hasPermission('/admin','r')")
     public String printAdmin() {
         return "如果你看见这句话，说明你访问/admin路径具有r权限";
     }
@@ -69,10 +74,10 @@ public class LoginController {
     public void loginError(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=utf-8");
         AuthenticationException exception =
-                (AuthenticationException)request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+                (AuthenticationException) request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
         try {
             response.getWriter().write(exception.toString());
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -94,7 +99,7 @@ public class LoginController {
         List<Object> users = sessionRegistry.getAllPrincipals();
         for (Object principal : users) {
             if (principal instanceof User) {
-                String principalName = ((User)principal).getUsername();
+                String principalName = ((User) principal).getUsername();
                 if (principalName.equals(username)) {
                     // 参数二：是否包含过期的Session
                     List<SessionInformation> sessionsInfo = sessionRegistry.getAllSessions(principal, false);
